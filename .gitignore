@@ -1,0 +1,9 @@
+.idea
+out
+#txt files
+anna.txt
+nlp.txt
+training.txt
+
+#repo
+.git
