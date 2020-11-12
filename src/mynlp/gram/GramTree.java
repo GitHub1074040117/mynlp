@@ -10,12 +10,14 @@ import java.util.ArrayList;
 class GramTree {
     private GramTreeNode root;
     private int degree;
+    private int lookAhead;
 
     GramTree(int degree) {
         if (degree <= 0) {
             new Exception("语法树的度数必须大于0").printStackTrace();
         }
         this.degree = degree;
+        this.lookAhead = degree - 1;
         root = new GramTreeNode();
     }
 
@@ -34,7 +36,7 @@ class GramTree {
             if (!node.containKey(word)) {
                 node.put(word, new GramTreeNode());
             }
-            node = node.get(word);
+            node = node.getChild(word);
             node.occur();
         }
     }
@@ -52,11 +54,26 @@ class GramTree {
 
         for (String word : tuple) {
             if (node.containKey(word)) {
-                node = node.get(word);
+                node = node.getChild(word);
             }
         }
         result = node.getRandomChildKey();
         return result;
+    }
+
+    // 根据输入的元组获取节点
+    GramTreeNode getTreeNodeByTuple(ArrayList<String> tuple) {
+        GramTreeNode node = root;
+        ArrayList<String> subTuple = ArrayListHelper.subArrayList(tuple, tuple.size() - degree);
+        for (String key : subTuple) {
+            if (node.containKey(key)) {
+                node = node.getChild(key);
+            } else {
+                new Exception("node not found : " + key).printStackTrace();
+                return node;
+            }
+        }
+        return node;
     }
 
 

@@ -14,6 +14,16 @@ public class ArrayListHelper {
         return result;
     }
 
+    // 获取子串
+    public static ArrayList<String> subArrayList(ArrayList<String> arrayList, int beginIndex) {
+        ArrayList<String> result = new ArrayList<>();
+        if (beginIndex < 0) beginIndex = 0;
+        for (int i = beginIndex; i < arrayList.size(); i++) {
+            result.add(arrayList.get(i));
+        }
+        return result;
+    }
+
     // 转化为字符串
     public static String arrayListToString(ArrayList<String> arrayList) {
         StringBuilder result = new StringBuilder();

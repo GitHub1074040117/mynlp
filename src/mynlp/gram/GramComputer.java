@@ -12,15 +12,20 @@ import java.util.Random;
 
 class GramComputer {
     private int degree;
-    private GramTreeNode root;
+    private GramTree tree;
 
     GramComputer(GramTree gramTree) {
+        this.tree = gramTree;
         this.degree = gramTree.getDegree();
-        this.root = gramTree.getRoot();
     }
 
     // 轮盘赌选择法
-    static String rouletteWheelSelection(HashMap<String, Integer> hashMap) {
+    static GramTreeNode wheelSelection(HashMap<String, GramTreeNode> children) {
+        HashMap<String, Integer> hashMap = new HashMap<>();
+        for (String key : children.keySet()) {
+            hashMap.put(key, children.get(key).getFreq());
+        }
+
         double[] a = new double[hashMap.size()];
         String[] b = new String[hashMap.size()];
         String result = "";
@@ -48,37 +53,23 @@ class GramComputer {
             }
         }
 
-        return result;
+        return children.get(result);
     }
-
 
     // 计算最大似然估计值（Maximum Likelihood Estimate），以degree=3为例，输入三元组<w1,w2,w3>，计算P(w3|w1w2)，即MLE，
     // 计算方法 P(w3|w1w2) = C(w1w2w3)/C(w1w2)
-    double computeMLE(ArrayList<String> tuple) {
+    double getMLE(ArrayList<String> tuple) {
         if (exceeded(tuple.size())) return 0;
-
         // 计算C(w1w2)
         int denominator = count(ArrayListHelper.subArrayList(tuple, 0, tuple.size() - 1));
         // 计算C(w1w2w3)
         int numerator = count(tuple);
-
         return numerator*1.0 / denominator;
     }
 
     // 计算C(w1w2w3...wn)其中n不能超过N元组中的N
     private int count(ArrayList<String> tuple) {
-        if (tuple.size() == 0) return root.getFreq();
-        if (exceeded(tuple.size())) return root.getFreq();
-        GramTreeNode node = root;
-        for (String key : tuple) {
-            if (node.containKey(key)) {
-                node = node.get(key);
-            } else {
-                new Exception("Word not found : " + key).printStackTrace();
-                return root.getFreq();
-            }
-        }
-        return node.getFreq();
+        return tree.getTreeNodeByTuple(tuple).getFreq();
     }
 
     // 检查元组的长度是否超过degree
