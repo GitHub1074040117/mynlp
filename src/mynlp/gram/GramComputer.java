@@ -84,4 +84,12 @@ class GramComputer {
         }
         return false;
     }
+
+    // 计算父子节点间可以组成粘连可能性
+    static boolean stickLikelihood(GramTreeNode parent, GramTreeNode child) {
+        if (parent.getFreq() < 18) return false;
+        if (child.getFreq() > 18) return true;
+        double likelihood = child.getFreq()*1.0 / parent.getFreq();
+        return likelihood > 0.65;
+    }
 }

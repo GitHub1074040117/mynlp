@@ -8,10 +8,12 @@ import java.util.HashMap;
 class GramTreeNode {
     private HashMap<String, GramTreeNode> children;
     private int frequency;
+    private String  key;
 
     GramTreeNode() {
         children = new HashMap<>();
         frequency = 0;
+        key = "";
     }
 
 
@@ -27,11 +29,12 @@ class GramTreeNode {
 
     // 添加键值和节点
     void put(String key, GramTreeNode node) {
+        node.key = key;
         children.put(key, node);
     }
 
     // 获取随机的子节点的键值
-    GramTreeNode getRandomChild() {
+    private GramTreeNode getRandomChild() {
         return GramComputer.wheelSelection(children);
     }
 
@@ -55,8 +58,10 @@ class GramTreeNode {
         return children.get(key).frequency*1.0 / frequency;
     }
 
-
-
+    void removeChild(String key) {
+        frequency -= children.get(key).frequency;
+        children.remove(key);
+    }
 
 
 
@@ -72,6 +77,10 @@ class GramTreeNode {
 
     int getFreq() {
         return frequency;
+    }
+
+    String getKey() {
+        return key;
     }
 
 

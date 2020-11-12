@@ -1,10 +1,10 @@
 package mynlp.gram;
 
 import mynlp.helper.ArrayListHelper;
+import mynlp.helper.WordHelper;
 import mynlp.tokenize.Tokenizer;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Stack;
 
 /**
@@ -28,7 +28,7 @@ public class GramTester {
     }
 
     // 输入句子，返回概率
-    public double probability(String sentence) {
+    private double probability(String sentence) {
         double result = 1;
         GramComputer gramComputer = new GramComputer(gramTree);
         ArrayList<String> tuple = tokenizer.tokenize(sentence);
@@ -38,7 +38,16 @@ public class GramTester {
         return result;
     }
 
-    public void printGramTree() {
+    // 打印语法树
+    public void showTree() {
+        show(gramTree);
+
+    }
+    public static void showTree(GramTree gramTree) {
+        show(gramTree);
+
+    }
+    private static void show(GramTree gramTree) {
         Stack<GramTreeNode> stackA = new Stack<>();
         Stack<GramTreeNode> stackB = new Stack<>();
         GramTreeNode root = gramTree.getRoot();
@@ -72,7 +81,6 @@ public class GramTester {
 
             }
         }
-
     }
 
 }

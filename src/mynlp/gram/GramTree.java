@@ -1,6 +1,7 @@
 package mynlp.gram;
 
 import mynlp.helper.ArrayListHelper;
+import mynlp.helper.WordHelper;
 
 import java.util.ArrayList;
 
@@ -10,14 +11,12 @@ import java.util.ArrayList;
 class GramTree {
     private GramTreeNode root;
     private int degree;
-    private int lookAhead;
 
     GramTree(int degree) {
         if (degree <= 0) {
             new Exception("语法树的度数必须大于0").printStackTrace();
         }
         this.degree = degree;
-        this.lookAhead = degree - 1;
         root = new GramTreeNode();
     }
 
@@ -74,6 +73,19 @@ class GramTree {
             }
         }
         return node;
+    }
+
+    // 删除根节点中的某些孩子，入停用词，非汉字字符等；For learning
+    void optimizeRootChildren() {
+        ArrayList<String> deleted = new ArrayList<>();
+        for (String key : root.getChildren().keySet()) {
+            if (WordHelper.isIrregular(key) || WordHelper.isStopWord(key)) {
+                deleted.add(key);
+            }
+        }
+        for (String key : deleted) {
+            root.removeChild(key);
+        }
     }
 
 
