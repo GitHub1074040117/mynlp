@@ -17,7 +17,7 @@ public class Tokenizer {
     }
 
     // 读取一个文件，将内容分词后返回
-    public ArrayList<String> tokenizeFile(String filePath, boolean stopwordRemoved) {
+    public ArrayList<String> tokenize(String filePath, boolean stopwordRemoved) {
         ArrayList<String> content = FileHelper.readFile(filePath);
         if (content == null) {
             new Exception("分词失败，文件读取错误！").printStackTrace();
@@ -28,45 +28,13 @@ public class Tokenizer {
 
         ArrayList<String> result = new ArrayList<>();
         for (String sentence : content) {
-            result.addAll(tokenizeSentence(sentence));
+            result.addAll(tokenize(sentence));
         }
         return stopwordRemoved ? Stopword.removeStopwords(result) : result;
     }
 
-    // 对一段话进行分词，生词不分开
-    /*public ArrayList<String> tokenizeSentence(String sentence) {
-        ArrayList<String> result = new ArrayList<>();
-        int offset = 0; // 用来添加生词
-        for (int i = 0; i < sentence.length(); i++) {
-            int wordLength;
-            for (wordLength = MAX_WORD_LENGTH; wordLength >= MIN_WORD_LENGTH; wordLength--) {
-                if (i + wordLength > sentence.length()) continue;
-                String word = sentence.substring(i, i + wordLength);
-
-                // 查找该词是否存在
-                if (storage.search(word)) {
-                    // 添加生词
-                    String rawWord = sentence.substring(offset, i);
-                    if (rawWord.length() > 0) result.addAll(Space.extractWordsSimplyBySpace(rawWord));
-                    // 添加熟词
-                    result.add(word);
-                    // 更新指针
-                    offset = i + wordLength;
-                    i = i + wordLength - 1;
-                    break;
-                }
-            }
-        }
-        // 没有匹配到任何词的时候，将整段句子添加进去
-        if (result.size() == 0) {
-            result.add(sentence);
-            return result;
-        }
-        return result;
-    }*/
-
     // 对一段话进行分词，生词分开
-    public ArrayList<String> tokenizeSentence(String sentence) {
+    public ArrayList<String> tokenize(String sentence) {
         ArrayList<String> result = new ArrayList<>();
         for (int i = 0; i < sentence.length(); i++) {
             int wordLength;

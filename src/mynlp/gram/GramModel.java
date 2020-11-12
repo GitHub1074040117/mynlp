@@ -38,7 +38,7 @@ public class GramModel {
         content = ContentHelper.regularSentenceFromContent(content, degree);
         // 对句子进行分词
         for (String sentence : content) {
-            ArrayList<String> tokenizedSentence = tokenizer.tokenizeSentence(sentence);
+            ArrayList<String> tokenizedSentence = tokenizer.tokenize(sentence);
             gramTree.build(tokenizedSentence);
         }
         // 打印训练结果
@@ -46,15 +46,11 @@ public class GramModel {
     }
 
     // 预测下一个词语
-    private String predictNext(String prefix) throws Exception {
-        int minLen = degree - 1;
-        ArrayList<String> tokenizedSentence = tokenizer.tokenizeSentence(prefix);
+    private String predictNext(String prefix) {
+        int lookAhead = degree - 1; // 向前看的词数
+        ArrayList<String> tokenizedSentence = tokenizer.tokenize(prefix);
         int size = tokenizedSentence.size();
-        if (size < minLen) {
-            throw new Exception("分词后的词组长度小于要求的最小长度, get: "
-                    + tokenizedSentence.size() + "  require: " + minLen);
-        }
-        ArrayList<String> tuple = ArrayListHelper.subArrayList(tokenizedSentence, size - minLen, size);
+        ArrayList<String> tuple = ArrayListHelper.subArrayList(tokenizedSentence, size - lookAhead);
         String word = gramTree.predict(tuple);
         return prefix + word;
     }
@@ -63,12 +59,7 @@ public class GramModel {
     public String randomSentence() {
         String result = SentenceHelper.getSentenceHeadByDegree(degree);
         for (int i = 0; i < MAX_TRY; i++ ) {
-            try {
-                result = predictNext(result);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return "";
-            }
+            result = predictNext(result);
             if (result.substring(result.length() - 1).equals(TAIL)) break;
         }
         return result.substring(degree - 1, result.length() - 1);
