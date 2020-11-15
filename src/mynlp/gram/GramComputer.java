@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 /**
- * 协助语法树完成一些随机计算和其他功能
+ * 协助语法树完成一些计算和其他功能
  * */
 
 class GramComputer {
@@ -17,6 +17,8 @@ class GramComputer {
     GramComputer(GramTree gramTree) {
         this.tree = gramTree;
         this.degree = gramTree.getDegree();
+        //this.avgFreq = new double[degree];
+        //computeAvgFreq();
     }
 
     // 轮盘赌选择法
@@ -83,13 +85,5 @@ class GramComputer {
             return true;
         }
         return false;
-    }
-
-    // 计算父子节点间可以组成粘连可能性
-    static boolean stickLikelihood(GramTreeNode parent, GramTreeNode child) {
-        if (parent.getFreq() < 18) return false;
-        if (child.getFreq() > 18) return true;
-        double likelihood = child.getFreq()*1.0 / parent.getFreq();
-        return likelihood > 0.65;
     }
 }

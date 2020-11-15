@@ -8,12 +8,10 @@ import java.util.HashMap;
 class GramTreeNode {
     private HashMap<String, GramTreeNode> children;
     private int frequency;
-    private String  key;
 
     GramTreeNode() {
         children = new HashMap<>();
         frequency = 0;
-        key = "";
     }
 
 
@@ -29,7 +27,6 @@ class GramTreeNode {
 
     // 添加键值和节点
     void put(String key, GramTreeNode node) {
-        node.key = key;
         children.put(key, node);
     }
 
@@ -52,18 +49,6 @@ class GramTreeNode {
         return getChildKey(getRandomChild());
     }
 
-    // 获取子节点的最大似然估计
-    double getChildMLE(String key) {
-        if (!containKey(key)) return 0;
-        return children.get(key).frequency*1.0 / frequency;
-    }
-
-    void removeChild(String key) {
-        frequency -= children.get(key).frequency;
-        children.remove(key);
-    }
-
-
 
     /*getter*/
     // 根据键值获取节点
@@ -78,10 +63,5 @@ class GramTreeNode {
     int getFreq() {
         return frequency;
     }
-
-    String getKey() {
-        return key;
-    }
-
 
 }

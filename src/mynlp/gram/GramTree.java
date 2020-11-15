@@ -1,7 +1,6 @@
 package mynlp.gram;
 
 import mynlp.helper.ArrayListHelper;
-import mynlp.helper.WordHelper;
 
 import java.util.ArrayList;
 
@@ -74,23 +73,6 @@ class GramTree {
         }
         return node;
     }
-
-    // 删除根节点中的某些孩子，入停用词，非汉字字符等；For learning
-    void optimizeRootChildren() {
-        ArrayList<String> deleted = new ArrayList<>();
-        for (String key : root.getChildren().keySet()) {
-            if (WordHelper.isIrregular(key) || WordHelper.isStopWord(key)) {
-                deleted.add(key);
-            }
-        }
-        for (String key : deleted) {
-            root.removeChild(key);
-        }
-    }
-
-
-
-
 
     /*getter*/
 

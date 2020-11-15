@@ -1,7 +1,6 @@
 package mynlp.gram;
 
 import mynlp.helper.ArrayListHelper;
-import mynlp.helper.WordHelper;
 import mynlp.tokenize.Tokenizer;
 
 import java.util.ArrayList;
@@ -45,7 +44,6 @@ public class GramTester {
     }
     public static void showTree(GramTree gramTree) {
         show(gramTree);
-
     }
     private static void show(GramTree gramTree) {
         Stack<GramTreeNode> stackA = new Stack<>();
