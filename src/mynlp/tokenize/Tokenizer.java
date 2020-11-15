@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Tokenizer {
     private static final String TEMP_PATH = "src/mynlp/storage/temp/";
-    private static final int MAX_WORD_LENGTH = 4; // 词语最大长度
+    private static final int MAX_WORD_LENGTH = 6; // 词语最大长度
     private static final int MIN_WORD_LENGTH = 2; // 词语最小长度
     private Storage storage;
 

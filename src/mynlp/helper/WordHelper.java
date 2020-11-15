@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class WordHelper {
-    private static final String[] STOPWORD = {"们","吧","呀","哟","哈","啊","啦","是","有","地","着","来","它","她","了","一","就","我","要","的","他","你"};
+    private static final String[] STOPWORD = {"儿","这","们","吧","呀","哟","哈","啊","啦","是","有","地","着","来","它","她","了","就","我","要","的","他","你"};
 
     // 判断一个词是否无其他非中文字符
     public static boolean isIrregular(String word) {
@@ -23,7 +23,7 @@ public class WordHelper {
     }
 
     // 判断一个词是否是另一个词的子字符串
-    public static boolean isSubMatch(String wordA, String wordB) {
+    static boolean isSubMatch(String wordA, String wordB) {
         String longWord = wordA.length() > wordB.length() ? wordA : wordB;
         String shortWord = wordA.length() > wordB.length() ? wordB : wordA;
         Pattern pattern = Pattern.compile(shortWord);

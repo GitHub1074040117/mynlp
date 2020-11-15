@@ -35,7 +35,7 @@ public class FileHelper {
                 fos.write("\n".getBytes());
             }
             fos.close();
-            System.out.println("File "+ filePath +" has been updated..");
+            //System.out.println("File "+ filePath +" has been updated..");
         } catch (Exception e) {
             e.printStackTrace();
         }
