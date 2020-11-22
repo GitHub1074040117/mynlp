@@ -43,7 +43,7 @@ class LearningTree {
     void optimizeRootChildren() {
         ArrayList<String> deleted = new ArrayList<>();
         for (String key : root.getChildren().keySet()) {
-            if (WordHelper.isIrregular(key) || WordHelper.isStopWord(key)) {
+            if (WordHelper.isNotChinese(key) || WordHelper.isStopWord(key)) {
                 deleted.add(key);
             }
         }

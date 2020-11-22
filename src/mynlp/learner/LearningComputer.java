@@ -6,7 +6,7 @@ class LearningComputer {
 
     // 计算父子节点间可以组成粘连可能性，子节点的频度大于同代节点的平均频度
     boolean stickLikelihood(LearningTreeNode parent, LearningTreeNode child) {
-        if (WordHelper.isIrregular(child.getKey())) return false;
+        if (WordHelper.isNotChinese(child.getKey())) return false;
         if (WordHelper.isStopWord(child.getKey()) || WordHelper.isStopWord(parent.getKey())) return false;
         // 排除频度过低的节点
         if (child.getFreq() < 5) return false;
