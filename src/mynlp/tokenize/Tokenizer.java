@@ -33,32 +33,55 @@ public class Tokenizer {
         return stopwordRemoved ? Stopword.removeStopwords(result) : result;
     }
 
-    // 对一段话进行分词，生词分开
+    // 对一段话进行分词，生词分开，双向最大匹配
     public ArrayList<String> tokenize(String sentence) {
+        ArrayList<String> result;
+        ArrayList<String> forward = forwardMaxMatch(sentence);
+        ArrayList<String> backward = backwardMaxMatch(sentence);
+        result = forward.size() > backward.size() ? forward : backward;
+        return result;
+    }
+
+    // 向前最大匹配
+    private ArrayList<String> forwardMaxMatch(String sentence) {
         ArrayList<String> result = new ArrayList<>();
         for (int i = 0; i < sentence.length(); i++) {
-            int wordLength;
-            for (wordLength = MAX_WORD_LENGTH; wordLength >= MIN_WORD_LENGTH; wordLength--) {
-                if (i + wordLength > sentence.length()) continue;
-                String word = sentence.substring(i, i + wordLength);
-
-                // 查找该词是否存在
+            int len;
+            for (len = MAX_WORD_LENGTH; len >= MIN_WORD_LENGTH; len--) {
+                if (i + len > sentence.length()) continue;
+                String word = sentence.substring(i, i + len);
                 if (storage.search(word)) {
-                    // 添加熟词
                     result.add(word);
-                    // 更新指针
-                    i = i + wordLength - 1;
+                    i = i + len - 1;
                     break;
                 }
             }
-            if (wordLength < MIN_WORD_LENGTH) {
+            // 未查找到词，将单个字添加进去
+            if (len < MIN_WORD_LENGTH) {
                 result.add(sentence.substring(i, i + 1));
             }
         }
-        // 没有匹配到任何词的时候，将整段句子添加进去
-        if (result.size() == 0) {
-            result.add(sentence);
-            return result;
+        return result;
+    }
+
+    // 向后最大匹配
+    private ArrayList<String> backwardMaxMatch(String sentence) {
+        ArrayList<String> result = new ArrayList<>();
+        for (int i = sentence.length(); i > 0; i--) {
+            int len;
+            for (len = MAX_WORD_LENGTH; len >= MIN_WORD_LENGTH; len--) {
+                if (i - len < 0) continue;
+                String word = sentence.substring(i - len, i);
+                if (storage.search(word)) {
+                    result.add(0,word);
+                    i = i - len + 1;
+                    break;
+                }
+            }
+            // 未查找到词，将单个字添加进去
+            if (len < MIN_WORD_LENGTH) {
+                result.add(0, sentence.substring(i-1, i));
+            }
         }
         return result;
     }
