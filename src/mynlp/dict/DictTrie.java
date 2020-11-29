@@ -1,4 +1,4 @@
-package mynlp.storage;
+package mynlp.dict;
 
 import java.util.ArrayList;
 
@@ -6,23 +6,23 @@ import java.util.ArrayList;
  * 字典树
  * */
 
-class Trie {
-    private TrieNode root; // 根节点
+class DictTrie {
+    private DictTrieNode root; // 根节点
 
     // 根据词汇表创建
-    Trie(ArrayList<String> words) {
-        root = new TrieNode();
+    DictTrie(ArrayList<String> words) {
+        root = new DictTrieNode();
         for (String word : words) {
             insert(word);
         }
     }
 
     private void insert(String word) {
-        TrieNode node = root;
+        DictTrieNode node = root;
         for (int i = 0; i < word.length(); i++) {
             Character c = word.charAt(i);
-            if (!node.containKey(c)) {
-                node.put(c, new TrieNode());
+            if (node.notContainsKey(c)) {
+                node.put(c, new DictTrieNode());
             }
             node = node.get(c);
         }
@@ -30,10 +30,10 @@ class Trie {
     }
 
     boolean search(String word) {
-        TrieNode node = root;
+        DictTrieNode node = root;
         for (int i = 0; i < word.length(); i++) {
             Character c = word.charAt(i);
-            if (!node.containKey(c)) {
+            if (node.notContainsKey(c)) {
                 return false;
             }
             node = node.get(c);

@@ -1,28 +1,27 @@
-package mynlp.markov;
+package mynlp.utils;
 
 import java.util.HashMap;
-import java.util.Random;
 
-class Helper {
+public class StringUtility {
 
-    // 生成num个随机数
-    static double[] randoms(int len) {
-        double[] result = new double[len];
-        double sum = 0;
-        Random random = new Random();
-        for (int i = 0; i < len; i++) {
-            int r = random.nextInt(100);
-            result[i] = r;
-            sum += r;
-        }
-        for (int i = 0; i < len; i++) {
-            result[i] = result[i] / sum;
+    public static String[] toStringArray(String str) {
+        String[] result = new String[str.length()];
+        for (int i = 0; i < str.length(); i++) {
+            result[i] = str.substring(i, i + 1);
         }
         return result;
     }
 
+    public static String toString(String[] strings) {
+        StringBuilder result = new StringBuilder();
+        for (String s : strings) {
+            result.append(s);
+        }
+        return result.toString();
+    }
+
     // 计算不同观察的种类数
-    static int countType(String[] strings) {
+    public static int countUniqueString(String[] strings) {
         HashMap<String, Integer> hashMap = new HashMap<>();
         int count = 0;
         for (String s : strings) {
@@ -37,8 +36,8 @@ class Helper {
     }
 
     // 将观察序列去重
-    static String[] countUnique(String[] strings) {
-        int type = countType(strings);
+    public static String[] getUniqueStrings(String[] strings) {
+        int type = countUniqueString(strings);
         String[] unique = new String[type];
         int index = 0;
         HashMap<String, Integer> hashMap = new HashMap<>();

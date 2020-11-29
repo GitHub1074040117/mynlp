@@ -1,10 +1,10 @@
-package mynlp.helper;
+package mynlp.utils;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SpaceHelper {
+public class SpaceUtility {
 
     // 仅仅通过空格区分，来将文本内容转化为词数组
     public static ArrayList<String> extractWordsSimplyBySpace(ArrayList<String> content) {
@@ -16,7 +16,7 @@ public class SpaceHelper {
     }
 
     // 对一句话进行分词，仅仅按照非中文作为分隔符
-    public static ArrayList<String> extractWordsSimplyBySpace(String sentence) {
+    private static ArrayList<String> extractWordsSimplyBySpace(String sentence) {
         ArrayList<String> words = new ArrayList<>();
         String regx = "[\u4e00-\u9fa5]+";
         Pattern pattern = Pattern.compile(regx);

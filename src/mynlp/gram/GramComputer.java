@@ -1,8 +1,5 @@
 package mynlp.gram;
 
-import mynlp.helper.ArrayListHelper;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -11,19 +8,16 @@ import java.util.Random;
  * */
 
 class GramComputer {
-    private int degree;
     private GramTree tree;
+    private int K = 6; // 大于k的计数认为是可靠的
 
     GramComputer(GramTree gramTree) {
         this.tree = gramTree;
-        this.degree = gramTree.getDegree();
-        //this.avgFreq = new double[degree];
-        //computeAvgFreq();
     }
 
     // 轮盘赌选择法
     static GramTreeNode wheelSelection(HashMap<String, GramTreeNode> children) {
-        HashMap<String, Integer> hashMap = new HashMap<>();
+        HashMap<String, Double> hashMap = new HashMap<>();
         for (String key : children.keySet()) {
             hashMap.put(key, children.get(key).getFreq());
         }
@@ -58,32 +52,26 @@ class GramComputer {
         return children.get(result);
     }
 
-    // 计算最大似然估计值（Maximum Likelihood Estimate），以degree=3为例，输入三元组<w1,w2,w3>，计算P(w3|w1w2)，即MLE，
-    // 计算方法 P(w3|w1w2) = C(w1w2w3)/C(w1w2)
-    double getMLE(ArrayList<String> tuple) {
-        if (exceeded(tuple.size())) return 0;
-        // 计算C(w1w2)
-        int denominator = count(ArrayListHelper.subArrayList(tuple, 0, tuple.size() - 1));
-        // 计算C(w1w2w3)
-        int numerator = count(tuple);
-        return numerator*1.0 / denominator;
+    // 使用Good-Turing平滑算法统计Nc，为估计0计数的N元语法出现的频率
+    double estimateZero() {
+        double[] counts = new double[K];
+        double zeroCount;
+        GramTreeNode root = tree.getRoot();
+        double N = root.getFreq();
+        counts = deepFirstSearch(root, counts);
+        zeroCount = counts[0] / N;
+        return zeroCount;
     }
 
-    // 计算C(w1w2w3...wn)其中n不能超过N元组中的N
-    private int count(ArrayList<String> tuple) {
-        return tree.getTreeNodeByTuple(tuple).getFreq();
-    }
-
-    // 检查元组的长度是否超过degree
-    private boolean exceeded(int tupleSize) {
-        if (tupleSize > degree) {
-            new Exception("元组数超出限制！found: "+ tupleSize + " require: <=" + degree).printStackTrace();
-            return true;
+    private double[] deepFirstSearch(GramTreeNode node, double[] counts) {
+        if (node.getChildren().size() == 0) {
+            if (node.getFreq() <= K)
+                counts[(int) (node.getFreq() - 1)]++;
+            return counts;
         }
-        if (tupleSize == 0) {
-            new Exception("元组数为空！found: "+ tupleSize + " require: > 0").printStackTrace();
-            return true;
+        for (GramTreeNode child : node.getChildren().values()) {
+            counts = deepFirstSearch(child, counts);
         }
-        return false;
+        return counts;
     }
 }

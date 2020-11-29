@@ -1,9 +1,9 @@
-package mynlp.helper;
+package mynlp.utils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class WordHelper {
+public class WordUtility {
     private static final String[] STOPWORD = {"儿","这","们","吧","呀","哟","哈","啊","啦","是","有","地","着","来","它","她","了","就","我","要","的","他","你"};
 
     // 判断一个词是否无其他非中文字符

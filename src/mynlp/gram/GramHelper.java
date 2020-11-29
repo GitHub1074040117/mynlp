@@ -1,19 +1,23 @@
-package mynlp.helper;
+package mynlp.gram;
 
-import mynlp.gram.GramModel;
+import java.util.ArrayList;
 
-public class SentenceHelper {
+class GramHelper {
 
-    // 为句子添加head和tail
-    public static String regularSentence(String sentence, int degree) {
+    // 为内容中的句子添加head和tail
+    static ArrayList<String> regularSentenceFromContent(ArrayList<String> content, int degree) {
+        ArrayList<String> result = new ArrayList<>();
         String head;
         String tail = GramModel.TAIL;
-        head = getSentenceHeadByDegree(degree);
-        return head + sentence + tail;
+        head = GramHelper.getSentenceHeadByDegree(degree);
+        for (String sentence : content) {
+            result.add(head + sentence + tail);
+        }
+        return result;
     }
 
     // 获取句子的头部
-    public static String getSentenceHeadByDegree(int degree) {
+    static String getSentenceHeadByDegree(int degree) {
         String h = GramModel.HEAD;
         switch (degree) {
             case 1:
@@ -36,4 +40,5 @@ public class SentenceHelper {
                 return h+h+h+h;
         }
     }
+
 }
