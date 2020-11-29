@@ -1,11 +1,11 @@
-package mynlp.helper;
+package mynlp.utils;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 
-public class FileHelper {
+public class FileUtility {
 
     // 读取文本返回内容，按行分填入字符串数组
     public static ArrayList<String> readFile(String filePath) {
@@ -23,6 +23,12 @@ public class FileHelper {
             return content;
         }
         return content;
+    }
+
+    // 读取文本，一个句子放一行
+    public static ArrayList<String> readFileWithSentence(String filePath) {
+        ArrayList<String> content = readFile(filePath);
+        return ContentUtility.specifySentenceFromContent(content);
     }
 
     // 输出文本内容到指定文件目录，不存在则创建，若存在则覆盖
